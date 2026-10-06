@@ -1,0 +1,14 @@
+workflow_id,status,execution_time_sec
+WF001,success,1.2
+WF001,success,1.5
+WF002,success,2.0
+WF002,failure,7.0
+WF003,success,2.2
+WF003,success,2.0
+WF004,success,3.0
+WF005,failure,1.0
+WF006,success,8.0
+WF007,success,4.0
+WF008,success,2.0
+WF009,success,1.5
+WF010,success,1.0

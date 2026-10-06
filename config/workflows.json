@@ -1,0 +1,236 @@
+[
+  {
+    "id": "WF001",
+    "name": "Inventory Restock Check",
+    "trigger": "User asks which products need restocking",
+    "inputs": [
+      "Product inventory CSV",
+      "minimum stock threshold"
+    ],
+    "steps": [
+      "Load inventory",
+      "Compare current stock with minimum threshold",
+      "Identify low-stock products",
+      "Calculate reorder quantity",
+      "Generate restock list"
+    ],
+    "decision_logic": "If current_stock < minimum_stock, mark product for restock",
+    "tools": [
+      "csv_reader",
+      "calculator"
+    ],
+    "expected_output": "List of products requiring restock with current stock, threshold, and suggested reorder quantity"
+  },
+  {
+    "id": "WF002",
+    "name": "Product Price Validation",
+    "trigger": "User asks to validate product prices",
+    "inputs": [
+      "Product CSV",
+      "vendor price list"
+    ],
+    "steps": [
+      "Load product prices",
+      "Match products by SKU",
+      "Compare internal and vendor prices",
+      "Calculate percentage difference",
+      "Flag exceptions"
+    ],
+    "decision_logic": "Flag when price difference exceeds 10%",
+    "tools": [
+      "csv_reader",
+      "calculator"
+    ],
+    "expected_output": "Validation report showing matched products, price differences, and exceptions"
+  },
+  {
+    "id": "WF003",
+    "name": "Vendor File Processing",
+    "trigger": "User provides a vendor file for processing",
+    "inputs": [
+      "CSV/XLSX file containing vendor product data"
+    ],
+    "steps": [
+      "Read file",
+      "Detect columns",
+      "Normalize column names",
+      "Validate required fields",
+      "Identify invalid rows",
+      "Produce cleaned dataset"
+    ],
+    "decision_logic": "Rows missing SKU or product name are invalid",
+    "tools": [
+      "excel_csv_parser",
+      "data_validation"
+    ],
+    "expected_output": "Cleaned file plus validation summary and invalid-row report"
+  },
+  {
+    "id": "WF004",
+    "name": "Product Description Generator",
+    "trigger": "User asks to generate product content",
+    "inputs": [
+      "Product name",
+      "category",
+      "attributes",
+      "material",
+      "color",
+      "target audience"
+    ],
+    "steps": [
+      "Validate required attributes",
+      "Create product description",
+      "Generate short description",
+      "Generate SEO title",
+      "Generate meta description"
+    ],
+    "decision_logic": "Do not invent missing product attributes; explicitly mark missing information",
+    "tools": [
+      "llm",
+      "text_validation"
+    ],
+    "expected_output": "Product description, short description, SEO title, and meta description"
+  },
+  {
+    "id": "WF005",
+    "name": "Customer Order Status",
+    "trigger": "User asks for an order status",
+    "inputs": [
+      "Order ID or customer email"
+    ],
+    "steps": [
+      "Validate identifier",
+      "Search order data",
+      "Retrieve order status",
+      "Retrieve shipment information",
+      "Summarize current status"
+    ],
+    "decision_logic": "If no order is found, ask for another identifier",
+    "tools": [
+      "order_database",
+      "shipment_lookup"
+    ],
+    "expected_output": "Order status, items, shipment status, and tracking information when available"
+  },
+  {
+    "id": "WF006",
+    "name": "Duplicate Product Detection",
+    "trigger": "User asks to find duplicate products",
+    "inputs": [
+      "Product catalog"
+    ],
+    "steps": [
+      "Load products",
+      "Normalize names/SKUs",
+      "Compare identifiers",
+      "Compare product attributes",
+      "Group likely duplicates",
+      "Assign confidence"
+    ],
+    "decision_logic": "Exact SKU match is a definite duplicate; high attribute similarity is a possible duplicate",
+    "tools": [
+      "catalog_reader",
+      "text_similarity"
+    ],
+    "expected_output": "Duplicate groups with matching fields and confidence level"
+  },
+  {
+    "id": "WF007",
+    "name": "Marketing Campaign Brief",
+    "trigger": "User asks to create a campaign brief",
+    "inputs": [
+      "Campaign goal",
+      "product list",
+      "target audience",
+      "promotion",
+      "dates"
+    ],
+    "steps": [
+      "Validate inputs",
+      "Identify campaign objective",
+      "Summarize products",
+      "Create messaging",
+      "Create channel recommendations",
+      "Create campaign checklist"
+    ],
+    "decision_logic": "If campaign goal or dates are missing, request them before generating the brief",
+    "tools": [
+      "llm",
+      "product_data_reader"
+    ],
+    "expected_output": "Structured campaign brief with objective, audience, messaging, channels, timeline, and checklist"
+  },
+  {
+    "id": "WF008",
+    "name": "SEO Keyword Classification",
+    "trigger": "User uploads or provides a keyword list",
+    "inputs": [
+      "Keyword CSV",
+      "product/category information"
+    ],
+    "steps": [
+      "Read keywords",
+      "Remove duplicates",
+      "Classify search intent",
+      "Map keywords to categories",
+      "Identify high-priority keywords",
+      "Export results"
+    ],
+    "decision_logic": "Classify each keyword as informational, commercial, transactional, or navigational",
+    "tools": [
+      "csv_reader",
+      "llm_classifier"
+    ],
+    "expected_output": "Keyword report with intent, category, priority, and recommended target page"
+  },
+  {
+    "id": "WF009",
+    "name": "Employee Task Assignment",
+    "trigger": "Manager asks the agent to assign a task",
+    "inputs": [
+      "Task description",
+      "employee list",
+      "skills",
+      "workload",
+      "priority",
+      "deadline"
+    ],
+    "steps": [
+      "Understand task requirements",
+      "Compare employee skills",
+      "Check current workload",
+      "Rank candidates",
+      "Select employee",
+      "Generate assignment summary"
+    ],
+    "decision_logic": "Prefer employees with required skills and available capacity; escalate if no suitable employee exists",
+    "tools": [
+      "employee_database",
+      "ranking_logic"
+    ],
+    "expected_output": "Recommended employee, reasoning, priority, deadline, and task summary"
+  },
+  {
+    "id": "WF010",
+    "name": "Workflow Performance Report",
+    "trigger": "User asks for a performance report",
+    "inputs": [
+      "Workflow execution logs"
+    ],
+    "steps": [
+      "Load execution logs",
+      "Calculate success/failure rate",
+      "Calculate average execution time",
+      "Identify frequent errors",
+      "Identify slow steps",
+      "Generate recommendations"
+    ],
+    "decision_logic": "Flag workflows with failure rate above 10% or average execution time above defined threshold",
+    "tools": [
+      "log_reader",
+      "calculator",
+      "reporting"
+    ],
+    "expected_output": "Performance summary with metrics, problem areas, and improvement recommendations"
+  }
+]
