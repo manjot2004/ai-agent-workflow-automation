@@ -63,7 +63,15 @@ if st.button("▶ Run Agent",type="primary",use_container_width=True):
     else:
         wid=forced.split(" — ")[0]
         w=registry.get(wid); confidence=1.0
-    result=agent.executor.execute(w,request,demo_data[w["id"]])
+    data = demo_data[w["id"]].copy()
+
+    if w["id"] == "WF005":
+      import re
+
+      match = re.search(r"\bORD-\d+\b", request, re.IGNORECASE)
+      data["order_id"] = match.group(0).upper() if match else None
+
+    result = agent.executor.execute(w, request, data)
     result.selected_confidence=confidence
 
     st.divider()
@@ -81,8 +89,13 @@ if st.button("▶ Run Agent",type="primary",use_container_width=True):
         st.write(f"{icon} **{i}. {step['step']}** — {step.get('detail','')}")
 
     st.subheader("Final Result")
-    st.json(result.result) if isinstance(result.result,(dict,list)) else st.info(str(result.result))
 
-with st.expander("Try an example"):
-    for wid,text in examples.items():
-        st.code(f"{wid}: {text}")
+    if result.result is not None:
+      if isinstance(result.result, (dict, list)):
+        st.json(result.result)
+      else:
+        st.info(str(result.result))
+    elif result.error:
+       st.warning(result.error)
+    else:
+      st.info("No result returned.")

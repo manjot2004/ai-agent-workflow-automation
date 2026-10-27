@@ -40,12 +40,23 @@ def vendor_process(path):
 
 def order_lookup(path, order_id=None, email=None):
     df = read_table(path)
+
+    print("DEBUG order_id received:", repr(order_id))
+    print("DEBUG email received:", repr(email))
+
     if order_id:
-        r = df[df["order_id"].astype(str).str.lower() == str(order_id).lower()]
+        r = df[
+            df["order_id"].astype(str).str.lower()
+            == str(order_id).lower()
+        ]
     elif email:
-        r = df[df["customer_email"].astype(str).str.lower() == str(email).lower()]
+        r = df[
+            df["customer_email"].astype(str).str.lower()
+            == str(email).lower()
+        ]
     else:
         return None
+
     return None if r.empty else r.iloc[0].to_dict()
 
 def duplicate_products(path, similarity_threshold=88):
